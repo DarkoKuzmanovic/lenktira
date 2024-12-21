@@ -1,0 +1,62 @@
+#root {
+  @apply min-h-screen;
+}
+
+/* Navigation styles */
+.nav-link {
+  @apply px-3 py-2 rounded-lg text-gray-600 hover:text-indigo-600 hover:bg-indigo-50
+  transition-colors duration-200 font-medium;
+}
+
+.nav-link.active {
+  @apply text-indigo-600 bg-indigo-50;
+}
+
+/* Blog post styles */
+.blog-post {
+  @apply prose prose-indigo max-w-none;
+}
+
+/* Gallery styles */
+.gallery-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.gallery-item {
+  @apply relative overflow-hidden rounded-xl shadow-sm hover:shadow-lg
+  transition-all duration-300 cursor-pointer;
+}
+
+.gallery-image {
+  @apply w-full h-64 object-cover transition-transform duration-300 hover:scale-105;
+}
+
+/* Video card styles */
+.video-card {
+  @apply bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300;
+}
+
+.video-thumbnail {
+  @apply w-full h-48 object-cover;
+}
+
+/* Fun facts styles */
+.fun-fact-card {
+  @apply bg-gradient-to-br from-indigo-500 to-purple-600 text-white p-6 rounded-xl
+  shadow-md hover:shadow-lg transition-shadow duration-300;
+}
+
+/* Loading skeleton animation */
+.loading-skeleton {
+  @apply animate-pulse bg-gray-200 rounded;
+}
+
+/* Mobile navigation styles */
+.nav-link-mobile {
+  @apply px-4 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50
+  transition-colors duration-200 font-medium border-b border-gray-100 last:border-none;
+}
+
+.nav-link-mobile.active {
+  @apply text-indigo-600 bg-indigo-50;
+}
