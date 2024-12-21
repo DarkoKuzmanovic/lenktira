@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { FunFact } from "../types";
 import ReactMarkdown from "react-markdown";
 
 const FunFacts = () => {

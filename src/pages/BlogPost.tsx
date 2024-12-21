@@ -19,7 +19,7 @@ const BlogPost = () => {
       const filePath = Object.keys(modules).find((path) => path.includes(slug!));
 
       if (filePath) {
-        const markdown = await modules[filePath]();
+        const markdown = (await modules[filePath]()) as string;
         const post = await parseBlogPost(markdown);
         setBlogPost(post);
       }
