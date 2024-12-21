@@ -29,7 +29,7 @@ const Gallery = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 space-y-12">
-      <h1 className="font-serif text-5xl font-semibold text-gray-900 tracking-tight">
+      <h1 className="font-serif text-5xl font-semibold text-gray-900 dark:text-white tracking-tight">
         Image Gallery
       </h1>
 
@@ -47,7 +47,7 @@ const Gallery = () => {
               onClick={() => setSelectedImage(image)}
               className="group cursor-pointer transition-all duration-300 hover:-translate-y-1"
             >
-              <div className="overflow-hidden rounded-lg bg-gray-100">
+              <div className="overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 shadow-md">
                 <img
                   src={image.src}
                   alt={image.alt}
@@ -55,7 +55,7 @@ const Gallery = () => {
                   loading="lazy"
                 />
               </div>
-              <p className="mt-3 text-lg font-medium text-gray-900">{image.description}</p>
+              <p className="mt-3 text-lg font-medium text-gray-900 dark:text-gray-100">{image.description}</p>
             </div>
           ))
         )}
@@ -63,13 +63,13 @@ const Gallery = () => {
 
       {selectedImage && (
         <div
-          className="fixed inset-0 bg-gray-900/95 flex items-center justify-center p-4 z-50 animate-fade-in"
+          className="fixed inset-0 bg-gray-900/95 dark:bg-black/95 flex items-center justify-center p-4 z-50 animate-fade-in"
           onClick={() => setSelectedImage(null)}
         >
-          <div className="max-w-4xl w-full bg-white rounded-lg overflow-hidden shadow-2xl animate-scale-in">
+          <div className="max-w-4xl w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-2xl animate-scale-in">
             <img src={selectedImage.src} alt={selectedImage.alt} className="w-full h-auto" />
             <div className="p-6">
-              <p className="font-serif text-2xl text-gray-900">{selectedImage.description}</p>
+              <p className="font-serif text-2xl text-gray-900 dark:text-white">{selectedImage.description}</p>
             </div>
           </div>
         </div>

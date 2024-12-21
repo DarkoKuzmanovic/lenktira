@@ -1,7 +1,15 @@
 import { BlogPost } from "../types";
 
+const calculateReadingTime = (content: string): string => {
+  const wordsPerMinute = 200;
+  const words = content.trim().split(/\s+/).length;
+  const minutes = Math.ceil(words / wordsPerMinute);
+  return `${minutes} min read`;
+};
+
 export const parseBlogPost = async (
-  markdown: string
+  markdown: string,
+  filename?: string
 ): Promise<BlogPost> => {
   const parts = markdown.split("---");
   let frontmatter = "";
@@ -27,13 +35,21 @@ export const parseBlogPost = async (
       return acc;
     }, {});
 
+  // Extract slug from filename (remove date and .md)
+  const slug = filename
+    ? filename.replace(/^\d{4}-\d{2}-\d{2}-(.+)\.md$/, '$1')
+    : metadata.title
+      ? metadata.title.toLowerCase().replace(/\s+/g, "-")
+      : "no-title";
+
+  const readingTime = calculateReadingTime(content);
+
   return {
     title: metadata.title || "No title",
     date: metadata.date || "No date",
     author: metadata.author || "Unknown author",
     content,
-    slug: metadata.title
-      ? metadata.title.toLowerCase().replace(/\s+/g, "-")
-      : "no-title",
+    slug,
+    readingTime,
   };
 };

@@ -10,13 +10,18 @@ const BlogPost = () => {
 
   useEffect(() => {
     const fetchBlogPost = async () => {
-      try {
-        const markdown = await fetch(`/content/blog/${slug}.md`).then((res) => res.text());
+      const modules = import.meta.glob("../content/blog/*.md", {
+        query: "?raw",
+        import: "default",
+      });
+
+      // Find the matching file for this slug
+      const filePath = Object.keys(modules).find((path) => path.includes(slug!));
+
+      if (filePath) {
+        const markdown = await modules[filePath]();
         const post = await parseBlogPost(markdown);
         setBlogPost(post);
-      } catch (err) {
-        console.error("Error fetching blog post:", err);
-        setBlogPost(null);
       }
     };
 
@@ -26,13 +31,21 @@ const BlogPost = () => {
   if (!blogPost) {
     return <div>Loading...</div>;
   }
-
   return (
     <div className="max-w-4xl mx-auto px-4 py-12 space-y-12">
-      <h1 className="font-serif text-5xl font-semibold text-gray-900 tracking-tight">{blogPost.title}</h1>
-      <p>{blogPost.date}</p>
-      <p>{blogPost.author}</p>
-      <div className="prose prose-lg prose-gray prose-headings:font-serif prose-headings:font-medium">
+      <div className="space-y-6">
+        <div className="flex items-center space-x-4 text-gray-600 dark:text-gray-400">
+          <time className="font-medium">{blogPost.date}</time>
+          <span>•</span>
+          <span className="italic">{blogPost.author}</span>
+          <span>•</span>
+          <span>{blogPost.readingTime}</span>
+        </div>
+        <h1 className="font-serif text-5xl font-semibold text-gray-900 dark:text-white tracking-tight">
+          {blogPost.title}
+        </h1>
+      </div>
+      <div className="prose prose-lg prose-gray dark:prose-invert prose-headings:font-serif prose-headings:font-medium">
         <ReactMarkdown>{blogPost.content}</ReactMarkdown>
       </div>
     </div>

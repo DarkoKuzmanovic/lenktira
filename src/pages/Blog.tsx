@@ -8,35 +8,43 @@ const Blog = () => {
 
   useEffect(() => {
     const fetchBlogPosts = async () => {
-      const blogFiles = ["2024-01-19-welcome-to-lenktira.md", "2024-01-20-hellou.md"];
+      const modules = import.meta.glob("../content/blog/*.md", {
+        query: "?raw",
+        import: "default",
+      });
 
       const posts = await Promise.all(
-        blogFiles.map(async (file) => {
-          const markdown = await fetch(`/src/content/blog/${file}`).then((res) => res.text());
-          return parseBlogPost(markdown);
+        Object.entries(modules).map(async ([filepath, resolver]) => {
+          const markdown = await resolver();
+          const filename = filepath.split("/").pop() || "";
+          return parseBlogPost(markdown, filename);
         })
       );
+
       setBlogPosts(posts);
     };
 
     fetchBlogPosts();
   }, []);
-
   return (
     <div className="max-w-4xl mx-auto px-4 py-12 space-y-12">
-      <h1 className="font-serif text-5xl font-semibold text-gray-900 tracking-tight">Blog</h1>
-      <div className="group space-y-5">
+      <h1 className="font-serif text-5xl font-semibold text-gray-900 dark:text-white tracking-tight">Blog</h1>
+      <div className="divide-y divide-gray-200 dark:divide-gray-800">
         {blogPosts.map((post) => (
-          <div
-            key={post.slug}
-            className="prose prose-lg prose-gray prose-headings:font-serif prose-headings:font-medium"
-          >
-            <Link to={`/blog/${post.slug}`}>
-              <h2>{post.title}</h2>
-              <p>{post.date}</p>
-              <p>{post.author}</p>
+          <article key={post.slug} className="py-8 group">
+            <Link to={`/blog/${post.slug}`} className="space-y-3 block">
+              <div className="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-400">
+                <time className="font-medium">{post.date}</time>
+                <span>•</span>
+                <span className="italic">{post.author}</span>
+                <span>•</span>
+                <span>{post.readingTime}</span>
+              </div>
+              <h2 className="font-serif text-2xl font-medium text-gray-900 dark:text-white group-hover:text-primary-600 transition-colors">
+                {post.title}
+              </h2>
             </Link>
-          </div>
+          </article>
         ))}
       </div>
     </div>
