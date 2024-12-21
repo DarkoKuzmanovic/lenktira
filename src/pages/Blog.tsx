@@ -17,7 +17,7 @@ const Blog = () => {
         Object.entries(modules).map(async ([filepath, resolver]) => {
           const markdown = await resolver();
           const filename = filepath.split("/").pop() || "";
-          return parseBlogPost(markdown, filename);
+          return parseBlogPost(markdown as string, filename);
         })
       );
 
